@@ -11,12 +11,13 @@ import Expenses from './pages/ExpenseLogs';
 
 import Drivers from './pages/DriverProfiles';
 import Analytics from './pages/Analytics';
+import Profile from './pages/Profile';
 
 export const roleAccess = {
-  'Manager': ['/dashboard', '/vehicles', '/maintenance', '/analytics'],
-  'Dispatcher': ['/dashboard', '/dispatch', '/drivers'],
-  'Safety Officer': ['/dashboard', '/drivers', '/vehicles'],
-  'Financial Analyst': ['/dashboard', '/expenses', '/analytics']
+  'Manager': ['/dashboard', '/vehicles', '/maintenance', '/analytics', '/profile'],
+  'Dispatcher': ['/dashboard', '/dispatch', '/drivers', '/profile'],
+  'Safety Officer': ['/dashboard', '/drivers', '/vehicles', '/profile'],
+  'Financial Analyst': ['/dashboard', '/expenses', '/analytics', '/profile']
 };
 
 const ProtectedRoute = ({ element, path }) => {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/expenses" element={<ProtectedRoute path="/expenses" element={<Expenses />} />} />
           <Route path="/drivers" element={<ProtectedRoute path="/drivers" element={<Drivers />} />} />
           <Route path="/analytics" element={<ProtectedRoute path="/analytics" element={<Analytics />} />} />
+          <Route path="/profile" element={<ProtectedRoute path="/profile" element={<Profile />} />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

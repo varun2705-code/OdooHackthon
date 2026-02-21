@@ -1,0 +1,123 @@
+.profile-page {
+    padding: 1rem 0;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    padding: 2.5rem;
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+    border-right: 1px solid var(--border-light);
+    padding-right: 2rem;
+}
+
+.profile-photo-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    background: var(--bg-card-solid);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid var(--accent-primary);
+    overflow: hidden;
+}
+
+.profile-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-upload-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: transform var(--transition-fast);
+}
+
+.photo-upload-btn:hover {
+    transform: scale(1.1);
+}
+
+.profile-brief {
+    text-align: center;
+}
+
+.profile-brief h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-form-wrapper {
+    flex: 1;
+}
+
+.profile-form .row {
+    flex-direction: row;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.profile-form .col {
+    flex: 1;
+}
+
+.disabled-input {
+    background: rgba(255, 255, 255, 0.02);
+    cursor: not-allowed;
+    color: var(--text-muted);
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+}
+
+.success-msg {
+    color: var(--status-success);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
