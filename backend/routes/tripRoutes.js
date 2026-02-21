@@ -4,10 +4,22 @@ const Trip = require('../models/Trip');
 const Vehicle = require('../models/Vehicle');
 const Driver = require('../models/Driver');
 
-// Get all trips
+// Get all trips with filtering and search
 router.get('/', async (req, res) => {
     try {
-        const trips = await Trip.find().populate('vehicleId').populate('driverId');
+        const { search, status } = req.query;
+        let query = {};
+
+        if (search) {
+            query.$or = [
+                { startLocation: { $regex: search, $options: 'i' } },
+                { endLocation: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        if (status) query.status = status;
+
+        const trips = await Trip.find(query).populate('vehicleId').populate('driverId');
         res.json(trips);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching trips' });

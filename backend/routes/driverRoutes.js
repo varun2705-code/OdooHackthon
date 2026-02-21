@@ -2,10 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Driver = require('../models/Driver');
 
-// Get all drivers
+// Get all drivers with filtering and search
 router.get('/', async (req, res) => {
     try {
-        const drivers = await Driver.find();
+        const { search, status, category } = req.query;
+        let query = {};
+
+        if (search) {
+            query.name = { $regex: search, $options: 'i' };
+        }
+
+        if (status) query.status = status;
+        if (category) query.licenseCategory = category;
+
+        const drivers = await Driver.find(query);
         res.json(drivers);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching drivers' });

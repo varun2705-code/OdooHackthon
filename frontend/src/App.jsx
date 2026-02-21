@@ -12,6 +12,7 @@ import Expenses from './pages/ExpenseLogs';
 import Drivers from './pages/DriverProfiles';
 import Analytics from './pages/Analytics';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Profile from './pages/Profile';
 
 export const roleAccess = {
@@ -19,6 +20,15 @@ export const roleAccess = {
   'Dispatcher': ['/dashboard', '/dispatch', '/drivers', '/profile'],
   'Safety Officer': ['/dashboard', '/drivers', '/vehicles', '/profile'],
   'Financial Analyst': ['/dashboard', '/expenses', '/analytics', '/profile']
+=======
+import Profile from './pages/Profile';
+
+export const roleAccess = {
+  'Manager': ['/dashboard', '/vehicles', '/dispatch', '/maintenance', '/expenses', '/drivers', '/analytics', '/profile'],
+  'Dispatcher': ['/dashboard', '/dispatch', '/drivers', '/vehicles', '/profile'],
+  'Safety Officer': ['/dashboard', '/drivers', '/vehicles', '/maintenance', '/profile'],
+  'Financial Analyst': ['/dashboard', '/expenses', '/analytics', '/vehicles', '/profile']
+>>>>>>> feature
 };
 
 const ProtectedRoute = ({ element, path }) => {
@@ -35,6 +45,7 @@ const ProtectedRoute = ({ element, path }) => {
   } catch (e) {
     return <Navigate to="/" replace />;
   }
+<<<<<<< HEAD
 =======
 import AdminDashboard from './pages/AdminDashboard';
 import ManageUsers from './pages/ManageUsers';
@@ -45,6 +56,8 @@ const AdminRoute = ({ children }) => {
   const isAdmin = user && (user.email === 'varun@gmail.com' || user.role === 'Admin');
   return isAdmin ? children : <Navigate to="/dashboard" replace />;
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+>>>>>>> feature
 };
 
 function App() {
@@ -56,6 +69,9 @@ function App() {
         {/* Protected Routes wrapped in Layout */}
         <Route element={<Layout />}>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature
           <Route path="/dashboard" element={<ProtectedRoute path="/dashboard" element={<Dashboard />} />} />
           <Route path="/vehicles" element={<ProtectedRoute path="/vehicles" element={<Vehicles />} />} />
           <Route path="/dispatch" element={<ProtectedRoute path="/dispatch" element={<Dispatch />} />} />
@@ -64,6 +80,7 @@ function App() {
           <Route path="/drivers" element={<ProtectedRoute path="/drivers" element={<Drivers />} />} />
           <Route path="/analytics" element={<ProtectedRoute path="/analytics" element={<Analytics />} />} />
           <Route path="/profile" element={<ProtectedRoute path="/profile" element={<Profile />} />} />
+<<<<<<< HEAD
 =======
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/vehicles" element={<Vehicles />} />
@@ -75,6 +92,8 @@ function App() {
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+>>>>>>> feature
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 =======
 import React from 'react';
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> feature
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
@@ -17,6 +21,7 @@ import {
 } from 'lucide-react';
 import './Sidebar.css';
 import { roleAccess } from '../App';
+<<<<<<< HEAD
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -42,6 +47,24 @@ import './Sidebar.css';
 const Sidebar = () => {
     const navigate = useNavigate();
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+
+const Sidebar = () => {
+    const navigate = useNavigate();
+    const [userRole, setUserRole] = useState('Manager');
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUserRole(parsedUser.role || 'Manager');
+            } catch (e) {
+                console.error('Error parsing user from local storage:', e);
+            }
+        }
+    }, []);
+>>>>>>> feature
 
     const handleLogout = () => {
         localStorage.removeItem('user');
@@ -49,10 +72,14 @@ const Sidebar = () => {
     };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     const allNavItems = [
 =======
     const navItems = [
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+    const allNavItems = [
+>>>>>>> feature
         { path: '/dashboard', name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
         { path: '/vehicles', name: 'Vehicle Registry', icon: <Truck size={20} /> },
         { path: '/dispatch', name: 'Trip Dispatcher', icon: <Map size={20} /> },
@@ -63,11 +90,15 @@ const Sidebar = () => {
     ];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> feature
     const navItems = allNavItems.filter(item => {
         if (item.path === '/dashboard') return true;
         const allowedPaths = roleAccess[userRole];
         return allowedPaths ? allowedPaths.includes(item.path) : false;
     });
+<<<<<<< HEAD
 =======
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
@@ -77,6 +108,8 @@ const Sidebar = () => {
         navItems.push({ path: '/admin', name: 'Admin Panel', icon: <Shield size={20} /> });
     }
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+>>>>>>> feature
 
     return (
         <div className="sidebar glass-panel">

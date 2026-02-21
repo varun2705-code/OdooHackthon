@@ -3,10 +3,19 @@ const router = express.Router();
 const MaintenanceLog = require('../models/MaintenanceLog');
 const Vehicle = require('../models/Vehicle');
 
-// Get maintenance logs
+// Get maintenance logs with filtering and search
 router.get('/', async (req, res) => {
     try {
-        const logs = await MaintenanceLog.find().populate('vehicleId');
+        const { search, type } = req.query;
+        let query = {};
+
+        if (search) {
+            query.description = { $regex: search, $options: 'i' };
+        }
+
+        if (type) query.type = type;
+
+        const logs = await MaintenanceLog.find(query).populate('vehicleId');
         res.json(logs);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching maintenance logs' });

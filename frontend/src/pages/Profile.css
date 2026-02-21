@@ -39,8 +39,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
     border: 3px solid var(--accent-primary);
     overflow: hidden;
+=======
+}
+
+.profile-photo-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--accent-primary);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+>>>>>>> feature
 }
 
 .profile-photo-placeholder {
@@ -58,6 +73,7 @@
     object-fit: cover;
 }
 
+<<<<<<< HEAD
 .photo-upload-btn {
     position: absolute;
     bottom: 5px;
@@ -78,6 +94,84 @@
     transform: scale(1.1);
 }
 
+=======
+.photo-actions-container {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 36px;
+    height: 36px;
+    z-index: 10;
+}
+
+.photo-main-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-md);
+}
+
+.photo-actions-container.active .photo-main-btn {
+    transform: rotate(45deg);
+}
+
+.photo-action-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    transform: scale(0.5) translate(0, 0);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.photo-actions-container.active .photo-action-item.upload {
+    opacity: 1;
+    transform: translateY(-56px) scale(1);
+    pointer-events: auto;
+}
+
+.photo-actions-container.active .photo-action-item.take {
+    opacity: 1;
+    transform: translate(-44px, -44px) scale(1);
+    transition-delay: 0.05s;
+    pointer-events: auto;
+}
+
+.photo-actions-container.active .photo-action-item.delete {
+    opacity: 1;
+    transform: translateX(-56px) scale(1);
+    transition-delay: 0.1s;
+    pointer-events: auto;
+}
+
+.photo-action-item.delete { color: var(--status-danger); }
+.photo-action-item.take { color: var(--status-info); }
+.photo-action-item.upload { color: var(--status-success); }
+
+>>>>>>> feature
 .profile-brief {
     text-align: center;
 }
@@ -101,10 +195,43 @@
     flex: 1;
 }
 
+<<<<<<< HEAD
 .disabled-input {
     background: rgba(255, 255, 255, 0.02);
     cursor: not-allowed;
     color: var(--text-muted);
+=======
+.profile-form .form-control {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 0.8rem 1.1rem;
+    border-radius: 10px;
+    transition: all var(--transition-normal);
+    width: 100%;
+}
+
+.profile-form .form-control:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.profile-form .form-control:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 0 15px rgba(99, 102, 241, 0.15);
+    transform: translateY(-1px);
+}
+
+.disabled-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    cursor: not-allowed;
+    color: var(--text-muted);
+    opacity: 0.7;
+    pointer-events: none;
+>>>>>>> feature
 }
 
 .profile-actions {
@@ -121,3 +248,81 @@
     font-size: 0.875rem;
     font-weight: 500;
 }
+<<<<<<< HEAD
+=======
+
+/* Camera Overlay */
+.camera-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.camera-modal {
+    position: relative;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.close-camera-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--bg-card-solid);
+    border: 2px solid var(--border-light);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.close-camera-btn:hover {
+    background: var(--status-danger);
+    border-color: var(--status-danger);
+    color: white;
+}
+
+.camera-viewport {
+    width: 400px;
+    height: 300px;
+    background: black;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror view for intuition */
+}
+
+.camera-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.capture-btn {
+    width: 100%;
+}
+>>>>>>> feature

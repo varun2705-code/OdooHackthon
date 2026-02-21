@@ -1,10 +1,15 @@
 .auth-container {
     min-height: 100vh;
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 100%;
     flex: 1;
 =======
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+    width: 100%;
+    flex: 1;
+>>>>>>> feature
     display: flex;
     align-items: center;
     justify-content: center;

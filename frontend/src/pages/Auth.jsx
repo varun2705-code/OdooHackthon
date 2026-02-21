@@ -19,11 +19,16 @@ const Auth = () => {
       const res = await axios.post(`http://localhost:5000${endpoint}`, formData);
       console.log('Success:', res.data);
 <<<<<<< HEAD
+<<<<<<< HEAD
       // Save user info in local storage so the dashboard header can show accurate role context
       localStorage.setItem('user', JSON.stringify(res.data.user || formData));
 =======
       localStorage.setItem('user', JSON.stringify(res.data.user));
 >>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+=======
+      // Save user info in local storage so the dashboard header can show accurate role context
+      localStorage.setItem('user', JSON.stringify(res.data.user || formData));
+>>>>>>> feature
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
