@@ -1,0 +1,13 @@
+{
+    "name": "odoo-hackathon",
+    "version": "1.0.0",
+    "description": "Odoo Hackathon Project",
+    "scripts": {
+        "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+        "dev:frontend": "cd frontend && npm run dev",
+        "dev:backend": "cd backend && npm start"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

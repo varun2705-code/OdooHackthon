@@ -1,0 +1,217 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Plus, Wrench, Calendar } from 'lucide-react';
+
+const MaintenanceLogs = () => {
+    const [logs, setLogs] = useState([]);
+    const [vehicles, setVehicles] = useState([]);
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState({
+        vehicleId: '', description: '', cost: '', type: 'Preventative'
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const [logsRes, vehiclesRes] = await Promise.all([
+                axios.get('http://localhost:5000/api/maintenance'),
+                axios.get('http://localhost:5000/api/vehicles')
+            ]);
+            setLogs(logsRes.data);
+            setVehicles(vehiclesRes.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        try {
+            // Ensure cost is a number
+            const submissionData = {
+                ...formData,
+                cost: Number(formData.cost)
+            };
+            await axios.post('http://localhost:5000/api/maintenance', submissionData);
+            setShowForm(false);
+            setFormData({ vehicleId: '', description: '', cost: '', type: 'Preventative' });
+            fetchData();
+        } catch (err) {
+            console.error('Error logging maintenance:', err);
+            setError(err.response?.data?.error || err.response?.data?.message || 'Failed to log maintenance. Please check your inputs.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleComplete = async (logId) => {
+        try {
+            await axios.put(`http://localhost:5000/api/maintenance/${logId}/complete`);
+            fetchData();
+        } catch (err) {
+            console.error('Error completing maintenance:', err);
+            alert('Failed to complete maintenance.');
+        }
+    };
+
+    return (
+        <div className="page-container" style={{ position: 'relative', width: '100%' }}>
+            {/* Header and Background Content */}
+            <div style={{ filter: showForm ? 'blur(8px)' : 'none', transition: 'filter 0.3s ease' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '3rem', textAlign: 'center' }}>
+                    <div>
+                        <h2>Service & Maintenance</h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Logging maintenance automatically sets the vehicle status to "In Shop"</p>
+                    </div>
+                    <button className="btn btn-primary" onClick={() => setShowForm(true)} style={{ padding: '0.75rem 2rem' }}>
+                        <Plus size={18} />
+                        Log Maintenance
+                    </button>
+                </div>
+
+                <div className="data-table-container">
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Vehicle</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Cost</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {logs.map((log) => (
+                                <tr key={log._id}>
+                                    <td>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Calendar size={14} style={{ color: 'var(--text-muted)' }} />
+                                            {new Date(log.date).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td style={{ fontWeight: '500' }}>{log.vehicleId?.licensePlate || 'N/A'}</td>
+                                    <td>
+                                        <span className={`status-pill ${log.type === 'Preventative' ? 'info' : 'danger'}`}>
+                                            {log.type}
+                                        </span>
+                                    </td>
+                                    <td>{log.description}</td>
+                                    <td style={{ color: 'var(--status-warning)', fontWeight: '600' }}>
+                                        ${typeof log.cost === 'number' ? log.cost.toLocaleString() : log.cost}
+                                    </td>
+                                    <td>
+                                        <span className={`status-pill ${log.completed ? 'success' : 'warning'}`}>
+                                            {log.completed ? 'Service Complete' : 'In Progress'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {!log.completed && (
+                                            <button
+                                                className="btn btn-primary"
+                                                style={{ padding: '0.25rem 0.75rem', fontSize: '0.75rem', width: 'auto' }}
+                                                onClick={() => handleComplete(log._id)}
+                                            >
+                                                Return to Service
+                                            </button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                            {logs.length === 0 && (
+                                <tr>
+                                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem' }}>No maintenance logs found. Click "Log Maintenance" to add one.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* Modal Overlay */}
+            {showForm && (
+                <div className="custom-modal-overlay" onClick={() => setShowForm(false)}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className="glass-panel modal-content"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3 style={{ gridColumn: 'span 2', marginBottom: '1rem', color: 'var(--text-primary)', textAlign: 'center' }}>Log Maintenance Activity</h3>
+
+                        {error && (
+                            <div style={{
+                                gridColumn: 'span 2',
+                                padding: '0.75rem',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid var(--status-danger)',
+                                borderRadius: '8px',
+                                color: 'var(--status-danger)',
+                                fontSize: '0.875rem',
+                                marginBottom: '0.5rem'
+                            }}>
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                            <label>Select Vehicle</label>
+                            <select name="vehicleId" className="form-control" onChange={handleChange} required>
+                                <option value="">-- Choose Vehicle --</option>
+                                {vehicles
+                                    .filter(v => v.status !== 'In Shop')
+                                    .map(v => (
+                                        <option key={v._id} value={v._id}>{v.licensePlate} ({v.status})</option>
+                                    ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Service Type</label>
+                            <select name="type" className="form-control" onChange={handleChange}>
+                                <option value="Preventative">Preventative Maintenance</option>
+                                <option value="Reactive">Reactive / Repair</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Total Cost ($)</label>
+                            <input type="number" name="cost" className="form-control" onChange={handleChange} required placeholder="0.00" />
+                        </div>
+
+                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                            <label>Description</label>
+                            <input type="text" name="description" className="form-control" onChange={handleChange} required placeholder="e.g. Oil Change, Tire Replacement" />
+                        </div>
+
+                        <div style={{ gridColumn: 'span 2', display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setShowForm(false)} disabled={loading}>Cancel</button>
+                            <button type="submit" className="btn btn-warning" style={{ flex: 1 }} disabled={loading}>
+                                <Wrench size={16} style={{ marginRight: '8px' }} />
+                                {loading ? 'Sending to Shop...' : 'Send to Shop'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+
+            <style>{`
+                @keyframes modalFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `}</style>
+        </div>
+    );
+};
+
+export default MaintenanceLogs;
