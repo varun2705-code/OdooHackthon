@@ -47,4 +47,17 @@ router.get('/stats', async (req, res) => {
     }
 });
 
+// Delete vehicle permanently
+router.delete('/:id', async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findByIdAndDelete(req.params.id);
+        if (!vehicle) {
+            return res.status(404).json({ message: 'Vehicle not found' });
+        }
+        res.json({ message: 'Vehicle deleted successfully', vehicle });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting vehicle', error });
+    }
+});
+
 module.exports = router;
