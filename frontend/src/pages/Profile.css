@@ -39,8 +39,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.profile-photo-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
     border: 3px solid var(--accent-primary);
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .profile-photo-placeholder {
@@ -58,25 +68,81 @@
     object-fit: cover;
 }
 
-.photo-upload-btn {
+.photo-actions-container {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background: var(--accent-gradient);
+    width: 36px;
+    height: 36px;
+    z-index: 10;
+}
+
+.photo-main-btn {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    padding: 0.5rem;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
+    background: var(--accent-gradient);
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    transition: transform var(--transition-fast);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-md);
 }
 
-.photo-upload-btn:hover {
-    transform: scale(1.1);
+.photo-actions-container.active .photo-main-btn {
+    transform: rotate(45deg);
 }
+
+.photo-action-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-card-solid);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    transform: scale(0.5) translate(0, 0);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.photo-actions-container.active .photo-action-item.upload {
+    opacity: 1;
+    transform: translateY(-56px) scale(1);
+    pointer-events: auto;
+}
+
+.photo-actions-container.active .photo-action-item.take {
+    opacity: 1;
+    transform: translate(-44px, -44px) scale(1);
+    transition-delay: 0.05s;
+    pointer-events: auto;
+}
+
+.photo-actions-container.active .photo-action-item.delete {
+    opacity: 1;
+    transform: translateX(-56px) scale(1);
+    transition-delay: 0.1s;
+    pointer-events: auto;
+}
+
+.photo-action-item.delete { color: var(--status-danger); }
+.photo-action-item.take { color: var(--status-info); }
+.photo-action-item.upload { color: var(--status-success); }
 
 .profile-brief {
     text-align: center;
@@ -120,4 +186,79 @@
     color: var(--status-success);
     font-size: 0.875rem;
     font-weight: 500;
+}
+
+/* Camera Overlay */
+.camera-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.camera-modal {
+    position: relative;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.close-camera-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--bg-card-solid);
+    border: 2px solid var(--border-light);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.close-camera-btn:hover {
+    background: var(--status-danger);
+    border-color: var(--status-danger);
+    color: white;
+}
+
+.camera-viewport {
+    width: 400px;
+    height: 300px;
+    background: black;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror view for intuition */
+}
+
+.camera-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.capture-btn {
+    width: 100%;
 }
