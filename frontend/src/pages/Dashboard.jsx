@@ -33,7 +33,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="kpi-grid">
+            <div className="kpi-grid no-print">
                 {kpiCards.map((kpi, idx) => (
                     <div key={idx} className="kpi-card glass-panel">
                         <div className="kpi-icon" style={{ backgroundColor: `${kpi.color}20`, color: kpi.color }}>
@@ -48,8 +48,14 @@ const Dashboard = () => {
             </div>
 
             <div className="dashboard-content">
-                <div className="dashboard-section glass-panel">
-                    <h3>Recent Trips</h3>
+                <div className="dashboard-section glass-panel printable-area">
+                    <div className="section-header">
+                        <h3>Recent Trips</h3>
+                        <div className="print-only">
+                            <p>Generated on: {new Date().toLocaleString()}</p>
+                            <p>Fleet Summary: {stats.total} Total | {stats.onTrip} Active</p>
+                        </div>
+                    </div>
                     <div className="data-table-container">
                         <table className="data-table">
                             <thead>
@@ -84,7 +90,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="dashboard-section glass-panel">
+                <div className="dashboard-section glass-panel no-print">
                     <h3>Fleet Status Overview</h3>
                     <div className="chart-placeholder">
                         <div className="status-bar-container">

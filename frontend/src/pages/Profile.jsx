@@ -122,6 +122,14 @@ const Profile = () => {
         }, 800);
     };
 
+    const today = new Date();
+    const maxDate = today.toISOString().split('T')[0];
+
+    // Max age 100 years
+    const minDateObj = new Date(today);
+    minDateObj.setFullYear(today.getFullYear() - 100);
+    const minDate = minDateObj.toISOString().split('T')[0];
+
     return (
         <div className="profile-page">
             <h1 className="page-title">Personal Profile</h1>
@@ -198,6 +206,8 @@ const Profile = () => {
                                     name="dob"
                                     className="form-control"
                                     value={user.dob}
+                                    min={minDate}
+                                    max={maxDate}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -205,7 +215,7 @@ const Profile = () => {
 
                         <div className="form-group row">
                             <div className="col">
-                                <label>System Role <span style={{ fontSize: '0.75rem', color: 'var(--status-warning)' }}>(Immutable)</span></label>
+                                <label>System Role</label>
                                 <input
                                     type="text"
                                     className="form-control disabled-input"

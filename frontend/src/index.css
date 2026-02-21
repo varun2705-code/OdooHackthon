@@ -84,6 +84,7 @@ h1 {
   font-size: 1.75rem;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
   margin-bottom: 1rem;
@@ -243,4 +244,81 @@ h3 {
 
 .data-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .sidebar, 
+  .main-header, 
+  .no-print,
+  .btn,
+  .notification-wrapper,
+  .user-profile {
+    display: none !important;
+  }
+
+  #root {
+    display: block !important;
+  }
+
+  .dashboard-container, 
+  .dashboard-content {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .glass-panel {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    color: black !important;
+  }
+
+  .printable-area {
+    width: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+
+  .data-table th {
+    background: #f5f5f5 !important;
+    color: black !important;
+    border-bottom: 2px solid black !important;
+  }
+
+  .data-table td {
+    border-bottom: 1px solid #eee !important;
+    color: black !important;
+  }
+
+  .status-pill {
+    border: 1px solid #ccc !important;
+    color: black !important;
+    background: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  h1, h2, h3 {
+    -webkit-text-fill-color: black !important;
+    background: none !important;
+    color: black !important;
+  }
+}
+
+.print-only {
+  display: none;
 }

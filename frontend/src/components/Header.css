@@ -126,6 +126,8 @@
     width: 320px;
     padding: 1rem;
     z-index: 100;
+    opacity: 1;
+
 }
 
 .notif-header {
@@ -199,4 +201,11 @@
 .notif-time {
     font-size: 0.7rem;
     color: var(--text-muted);
+}
+
+.notif-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.875rem;
 }
