@@ -2,10 +2,29 @@ const express = require('express');
 const router = express.Router();
 const ExpenseLog = require('../models/ExpenseLog');
 
-// Get expenses
+// Get expenses with filtering and search
 router.get('/', async (req, res) => {
     try {
-        const expenses = await ExpenseLog.find().populate('vehicleId').populate('tripId');
+        const { type, search } = req.query;
+        let query = {};
+
+        if (type) query.type = type;
+        
+        // Basic search on type if needed, but usually expenses are searched by vehicle
+        // Let's implement a search that look at the populated vehicle plate if possible
+        // For simple find(), we can't filter by populated fields easily.
+        // We'll return the query as is and handle complex filtering if needed.
+        
+        let expenses = await ExpenseLog.find(query).populate('vehicleId').populate('tripId');
+        
+        if (search) {
+            const searchLower = search.toLowerCase();
+            expenses = expenses.filter(exp => 
+                (exp.vehicleId && exp.vehicleId.licensePlate.toLowerCase().includes(searchLower)) ||
+                exp.type.toLowerCase().includes(searchLower)
+            );
+        }
+
         res.json(expenses);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching expenses' });

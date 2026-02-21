@@ -5,10 +5,12 @@ import PageHeader from '../components/PageHeader';
 
 const TripDispatcher = () => {
     const [trips, setTrips] = useState([]);
+    const [filteredTrips, setFilteredTrips] = useState([]);
     const [vehicles, setVehicles] = useState([]);
     const [drivers, setDrivers] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [error, setError] = useState('');
+    const [filters, setFilters] = useState({ search: '', status: '', sort: '' });
 
     const [formData, setFormData] = useState({
         vehicleId: '', driverId: '', cargoWeight: '', startLocation: '', endLocation: ''
@@ -16,21 +18,54 @@ const TripDispatcher = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [filters.status]);
 
-    const fetchData = async () => {
+    const fetchData = async (searchVal) => {
         try {
+            const currentSearch = typeof searchVal === 'string' ? searchVal : filters.search;
             const [tripsRes, vehiclesRes, driversRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/trips'),
+                axios.get('http://localhost:5000/api/trips', {
+                    params: { search: currentSearch, status: filters.status }
+                }),
                 axios.get('http://localhost:5000/api/vehicles'),
                 axios.get('http://localhost:5000/api/drivers')
             ]);
-            setTrips(tripsRes.data);
+
+            let data = tripsRes.data;
+            if (currentSearch) {
+                const s = currentSearch.toLowerCase();
+                data = data.filter(t =>
+                    (t.startLocation && t.startLocation.toLowerCase().includes(s)) ||
+                    (t.endLocation && t.endLocation.toLowerCase().includes(s)) ||
+                    (t.vehicleId && t.vehicleId.licensePlate.toLowerCase().includes(s)) ||
+                    (t.driverId && t.driverId.name.toLowerCase().includes(s))
+                );
+            }
+
+            setTrips(data);
+            applyLocalSort(data, filters.sort);
             setVehicles(vehiclesRes.data);
             setDrivers(driversRes.data);
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const applyLocalSort = (data, sortType) => {
+        let sorted = [...data];
+        if (sortType === 'newest') sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        else if (sortType === 'oldest') sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setFilteredTrips(sorted);
+    };
+
+    const handleSort = (sortType) => {
+        setFilters(prev => ({ ...prev, sort: sortType }));
+        applyLocalSort(trips, sortType);
+    };
+
+    const handleSearchTrigger = (val) => {
+        setFilters(prev => ({ ...prev, search: val }));
+        fetchData(val);
     };
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,14 +96,18 @@ const TripDispatcher = () => {
     };
 
     const availableVehicles = vehicles.filter(v => v.status === 'Available');
-    const availableDrivers = drivers.filter(d => d.status === 'On Duty');
+    const availableDrivers = drivers.filter(d => d.status === 'Off Duty' || d.status === 'On Duty').filter(d => {
+        return new Date(d.licenseExpiry) > new Date();
+    });
 
     return (
         <div className="trip-dispatcher-page">
             <PageHeader
                 title="Trip Dispatcher"
                 subtitle="Efficiently schedule, assign, and monitor active fleet missions."
-                onSearch={(val) => console.log('Searching trips:', val)}
+                onSearch={handleSearchTrigger}
+                onGroup={(val) => setFilters(prev => ({ ...prev, status: val }))}
+                onSort={handleSort}
             />
 
             <div className="dispatcher-actions no-print" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -133,7 +172,7 @@ const TripDispatcher = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {trips.map((t) => (
+                            {filteredTrips.map((t) => (
                                 <tr key={t._id}>
                                     <td>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -151,7 +190,7 @@ const TripDispatcher = () => {
                                     </td>
                                     <td>{t.driverId?.name}</td>
                                     <td>
-                                        <span className={`status-pill ${t.status === 'Completed' ? 'success' : t.status === 'Dispatched' ? 'info' : t.status === 'Cancelled' ? 'danger' : 'warning'}`}>
+                                        <span className={`status-pill ${t.status === 'Completed' ? 'success' : t.status === 'Dispatched' ? 'info' : t.status === 'Draft' ? 'warning' : 'danger'}`}>
                                             {t.status}
                                         </span>
                                     </td>
@@ -176,9 +215,9 @@ const TripDispatcher = () => {
                                     </td>
                                 </tr>
                             ))}
-                            {trips.length === 0 && (
+                            {filteredTrips.length === 0 && (
                                 <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No trips found. Create one above.</td>
+                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No trips found matching your search.</td>
                                 </tr>
                             )}
                         </tbody>

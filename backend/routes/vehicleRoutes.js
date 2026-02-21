@@ -2,10 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Vehicle = require('../models/Vehicle');
 
-// Get all vehicles
+// Get all vehicles with filtering and search
 router.get('/', async (req, res) => {
     try {
-        const vehicles = await Vehicle.find();
+        const { search, status, type } = req.query;
+        let query = {};
+
+        if (search) {
+            query.$or = [
+                { licensePlate: { $regex: search, $options: 'i' } },
+                { name: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        if (status) query.status = status;
+        if (type) query.type = type;
+
+        const vehicles = await Vehicle.find(query);
         res.json(vehicles);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching vehicles' });

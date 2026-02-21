@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import { Search, Filter, Layers, SortDesc } from 'lucide-react';
+import { Search, Filter, Layers, SortDesc, X } from 'lucide-react';
 import './PageHeader.css';
 
 /**
  * Common Page Header Component
  * Provides Search, Filter (Sort By), and Group By functionalities
+ * Updated with a Trigger Button, Enter key support, and Clear functionality
  */
 const PageHeader = ({ title, subtitle, onSearch, onSort, onGroup }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearchChange = (e) => {
-        const val = e.target.value;
-        setSearchTerm(val);
-        if (onSearch) onSearch(val);
+    const handleSearchClick = () => {
+        if (onSearch) onSearch(searchTerm);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearchClick();
+        }
+    };
+
+    const handleSearchInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        if (onSearch) onSearch(''); // Trigger search with empty string to reset results
     };
 
     return (
@@ -29,9 +43,22 @@ const PageHeader = ({ title, subtitle, onSearch, onSort, onGroup }) => {
                         type="text"
                         placeholder={`Search ${title.toLowerCase()}...`}
                         value={searchTerm}
-                        onChange={handleSearchChange}
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleKeyDown}
                         className="search-input"
                     />
+                    {searchTerm && (
+                        <button className="search-clear-btn" onClick={handleClearSearch} title="Clear search">
+                            <X size={16} />
+                        </button>
+                    )}
+                    <button
+                        className="search-trigger-btn"
+                        onClick={handleSearchClick}
+                        title="Search"
+                    >
+                        Search
+                    </button>
                 </div>
 
                 <div className="control-group">
@@ -55,11 +82,6 @@ const PageHeader = ({ title, subtitle, onSearch, onSort, onGroup }) => {
                             <option value="category">Category</option>
                         </select>
                     </div>
-
-                    <button className="filter-btn btn-secondary">
-                        <Filter size={16} />
-                        <span>Filters</span>
-                    </button>
                 </div>
             </div>
         </div>

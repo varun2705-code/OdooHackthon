@@ -34,6 +34,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .search-icon {
@@ -41,6 +42,7 @@
     left: 1rem;
     color: var(--text-muted);
     pointer-events: none;
+    z-index: 10;
 }
 
 .search-input {
@@ -48,11 +50,32 @@
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-light);
     border-radius: 10px;
-    padding: 0.75rem 1rem 0.75rem 2.8rem;
+    padding: 0.75rem 2.8rem 0.75rem 2.8rem;
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.9rem;
     transition: all var(--transition-normal);
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 5.8rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.search-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
 }
 
 .search-input:focus {
@@ -60,6 +83,30 @@
     background: rgba(0, 0, 0, 0.4);
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 0 15px rgba(99, 102, 241, 0.1);
+}
+
+.search-trigger-btn {
+    padding: 0.75rem 1.25rem;
+    background: var(--accent-primary);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    white-space: nowrap;
+}
+
+.search-trigger-btn:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
+}
+
+.search-trigger-btn:active {
+    transform: translateY(0);
 }
 
 .control-group {
@@ -98,11 +145,6 @@
 .control-select option {
     background: var(--bg-card-solid);
     color: var(--text-primary);
-}
-
-.filter-btn {
-    height: 38px;
-    border-radius: 8px !important;
 }
 
 @media (max-width: 768px) {

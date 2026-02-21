@@ -14,10 +14,10 @@ import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
 
 export const roleAccess = {
-  'Manager': ['/dashboard', '/vehicles', '/maintenance', '/analytics', '/profile'],
-  'Dispatcher': ['/dashboard', '/dispatch', '/drivers', '/profile'],
-  'Safety Officer': ['/dashboard', '/drivers', '/vehicles', '/profile'],
-  'Financial Analyst': ['/dashboard', '/expenses', '/analytics', '/profile']
+  'Manager': ['/dashboard', '/vehicles', '/dispatch', '/maintenance', '/expenses', '/drivers', '/analytics', '/profile'],
+  'Dispatcher': ['/dashboard', '/dispatch', '/drivers', '/vehicles', '/profile'],
+  'Safety Officer': ['/dashboard', '/drivers', '/vehicles', '/maintenance', '/profile'],
+  'Financial Analyst': ['/dashboard', '/expenses', '/analytics', '/vehicles', '/profile']
 };
 
 const ProtectedRoute = ({ element, path }) => {

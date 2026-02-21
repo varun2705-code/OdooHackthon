@@ -5,22 +5,63 @@ import PageHeader from '../components/PageHeader';
 
 const VehicleRegistry = () => {
     const [vehicles, setVehicles] = useState([]);
+    const [filteredVehicles, setFilteredVehicles] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [filters, setFilters] = useState({ search: '', status: '', type: '', sort: '' });
+
     const [formData, setFormData] = useState({
         name: '', model: '', licensePlate: '', maxLoadCapacity: '', type: 'Van', acquisitionCost: ''
     });
 
     useEffect(() => {
         fetchVehicles();
-    }, []);
+    }, [filters.status, filters.type]);
 
-    const fetchVehicles = async () => {
+    const fetchVehicles = async (searchVal) => {
         try {
-            const res = await axios.get('http://localhost:5000/api/vehicles');
+            const currentSearch = typeof searchVal === 'string' ? searchVal : filters.search;
+            const res = await axios.get('http://localhost:5000/api/vehicles', {
+                params: {
+                    search: currentSearch,
+                    status: filters.status,
+                    type: filters.type
+                }
+            });
             setVehicles(res.data);
+
+            // Client-side fallback filter to ensure UI updates immediately
+            let data = res.data;
+            if (currentSearch) {
+                const s = currentSearch.toLowerCase();
+                data = data.filter(v =>
+                    v.licensePlate.toLowerCase().includes(s) ||
+                    v.name.toLowerCase().includes(s)
+                );
+            }
+
+            applyLocalSort(data, filters.sort);
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const applyLocalSort = (data, sortType) => {
+        let sorted = [...data];
+        if (sortType === 'name_asc') sorted.sort((a, b) => a.name.localeCompare(b.name));
+        else if (sortType === 'name_desc') sorted.sort((a, b) => b.name.localeCompare(a.name));
+        else if (sortType === 'newest') sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        else if (sortType === 'oldest') sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setFilteredVehicles(sorted);
+    };
+
+    const handleSort = (sortType) => {
+        setFilters(prev => ({ ...prev, sort: sortType }));
+        applyLocalSort(vehicles, sortType);
+    };
+
+    const handleSearchTrigger = (val) => {
+        setFilters(prev => ({ ...prev, search: val }));
+        fetchVehicles(val);
     };
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,7 +103,9 @@ const VehicleRegistry = () => {
             <PageHeader
                 title="Vehicle Registry"
                 subtitle="Manage and track your entire fleet of vehicles, vans, and trucks."
-                onSearch={(val) => console.log('Searching vehicles:', val)}
+                onSearch={handleSearchTrigger}
+                onGroup={(val) => setFilters(prev => ({ ...prev, status: val }))}
+                onSort={handleSort}
             />
 
             <div className="registry-actions no-print" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
@@ -120,7 +163,7 @@ const VehicleRegistry = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {vehicles.map((v) => (
+                            {filteredVehicles.map((v) => (
                                 <tr key={v._id} style={{ opacity: v.status === 'Retired' ? 0.6 : 1 }}>
                                     <td style={{ fontWeight: '500' }}>{v.licensePlate}</td>
                                     <td>
@@ -145,9 +188,9 @@ const VehicleRegistry = () => {
                                     </td>
                                 </tr>
                             ))}
-                            {vehicles.length === 0 && (
+                            {filteredVehicles.length === 0 && (
                                 <tr>
-                                    <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>No vehicles found. Add one above.</td>
+                                    <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>No vehicles found matching your criteria.</td>
                                 </tr>
                             )}
                         </tbody>
