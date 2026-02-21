@@ -16,6 +16,10 @@ const driverRoutes = require('./routes/driverRoutes');
 const tripRoutes = require('./routes/tripRoutes');
 const maintenanceRoutes = require('./routes/maintenanceRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+<<<<<<< HEAD
+=======
+const userRoutes = require('./routes/userRoutes');
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
@@ -24,6 +28,10 @@ app.use('/api/drivers', driverRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/maintenance', maintenanceRoutes);
 app.use('/api/expenses', expenseRoutes);
+<<<<<<< HEAD
+=======
+app.use('/api/users', userRoutes);
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
 mongoose
     .connect(process.env.MONGO_URI)

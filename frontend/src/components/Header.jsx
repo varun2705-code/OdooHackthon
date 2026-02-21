@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, UserCircle, Printer } from 'lucide-react';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
@@ -14,11 +15,18 @@ const Header = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({ name: 'Alex Manager', role: 'Manager' });
     const [showNotifications, setShowNotifications] = useState(false);
+=======
+import './Header.css';
+
+const Header = () => {
+    const [user, setUser] = useState({ name: 'Guest', role: 'Viewer' });
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             try {
+<<<<<<< HEAD
                 const parsedUser = JSON.parse(storedUser);
                 const role = parsedUser.role || 'Manager';
                 setUser({
@@ -28,10 +36,16 @@ const Header = () => {
                 });
             } catch (e) {
                 console.error('Error parsing user from local storage:', e);
+=======
+                setUser(JSON.parse(storedUser));
+            } catch (e) {
+                console.error("Failed to parse user data from localStorage");
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
             }
         }
     }, []);
 
+<<<<<<< HEAD
     const roleName = user.role === 'Manager' ? 'Fleet Manager' : user.role;
     const roleDescription = roleDescriptions[user.role] || roleDescriptions['Manager'];
 
@@ -44,6 +58,12 @@ const Header = () => {
     return (
         <header className="main-header glass-panel">
             <div className="header-breadcrumbs">
+=======
+    return (
+        <header className="main-header glass-panel">
+            <div className="header-breadcrumbs">
+                {/* Placeholder for dynamic breadcrumbs or title */}
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
                 <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Command Center</h3>
             </div>
 
@@ -51,6 +71,7 @@ const Header = () => {
                 <button className="icon-btn" title="Print View">
                     <Printer size={20} />
                 </button>
+<<<<<<< HEAD
                 <div className="notification-wrapper">
                     <button
                         className={`icon-btn ${showNotifications ? 'active' : ''}`}
@@ -100,6 +121,15 @@ const Header = () => {
                     <div className="user-profile-dropdown glass-panel">
                         <div className="dropdown-role">{roleName}</div>
                         <div className="dropdown-desc">{roleDescription}</div>
+=======
+
+
+                <div className="user-profile">
+                    <UserCircle size={28} style={{ color: 'var(--accent-primary)' }} />
+                    <div className="user-info">
+                        <span className="user-name">{user.name}</span>
+                        <span className="user-role">{user.role}</span>
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
                     </div>
                 </div>
             </div>

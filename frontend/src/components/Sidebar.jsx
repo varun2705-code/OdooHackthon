@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
+=======
+import React from 'react';
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
@@ -8,6 +12,7 @@ import {
     CreditCard,
     Users,
     BarChart,
+<<<<<<< HEAD
     LogOut
 } from 'lucide-react';
 import './Sidebar.css';
@@ -28,13 +33,26 @@ const Sidebar = () => {
             }
         }
     }, []);
+=======
+    LogOut,
+    Shield
+} from 'lucide-react';
+import './Sidebar.css';
+
+const Sidebar = () => {
+    const navigate = useNavigate();
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
     const handleLogout = () => {
         localStorage.removeItem('user');
         navigate('/');
     };
 
+<<<<<<< HEAD
     const allNavItems = [
+=======
+    const navItems = [
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
         { path: '/dashboard', name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
         { path: '/vehicles', name: 'Vehicle Registry', icon: <Truck size={20} /> },
         { path: '/dispatch', name: 'Trip Dispatcher', icon: <Map size={20} /> },
@@ -44,17 +62,32 @@ const Sidebar = () => {
         { path: '/analytics', name: 'Analytics', icon: <BarChart size={20} /> },
     ];
 
+<<<<<<< HEAD
     const navItems = allNavItems.filter(item => {
         if (item.path === '/dashboard') return true;
         const allowedPaths = roleAccess[userRole];
         return allowedPaths ? allowedPaths.includes(item.path) : false;
     });
+=======
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+    const isAdmin = user && (user.email === 'varun@gmail.com' || user.role === 'Admin');
+
+    if (isAdmin) {
+        navItems.push({ path: '/admin', name: 'Admin Panel', icon: <Shield size={20} /> });
+    }
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
     return (
         <div className="sidebar glass-panel">
             <div className="sidebar-header">
+<<<<<<< HEAD
                 <h2 className="logo">FleetFlow</h2>
                 <span className="version">v1.0</span>
+=======
+
+
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
             </div>
 
             <nav className="sidebar-nav">

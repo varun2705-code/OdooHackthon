@@ -47,7 +47,11 @@ const Analytics = () => {
     };
 
     return (
+<<<<<<< HEAD
         <div className="page-container" style={{ position: 'relative', width: '100%' }}>
+=======
+        <div className="page-container glass-panel" style={{ padding: '1.5rem' }}>
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
                     <h2>Operational & Financial Analytics</h2>

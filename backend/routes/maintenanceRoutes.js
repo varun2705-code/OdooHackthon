@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
         await log.save(); // Note: Pre-save hook in model will update vehicle status to "In Shop"
         res.status(201).json(log);
     } catch (error) {
+<<<<<<< HEAD
         console.error('Error in maintenance POST:', error);
         res.status(400).json({ message: 'Error logging maintenance', error: error.message || error });
     }
@@ -40,6 +41,9 @@ router.put('/:id/complete', async (req, res) => {
         res.json({ message: 'Maintenance completed, vehicle back in service', log });
     } catch (error) {
         res.status(400).json({ message: 'Error completing maintenance', error });
+=======
+        res.status(400).json({ message: 'Error logging maintenance', error });
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     }
 });
 

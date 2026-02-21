@@ -11,6 +11,7 @@ const Dashboard = () => {
         available: 0
     });
 
+<<<<<<< HEAD
     useEffect(() => {
         fetchStats();
     }, []);
@@ -21,6 +22,24 @@ const Dashboard = () => {
             setStats(res.data);
         } catch (err) {
             console.error('Error fetching stats:', err);
+=======
+    const [recentTrips, setRecentTrips] = useState([]);
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
+
+    const fetchDashboardData = async () => {
+        try {
+            const [statsRes, tripsRes] = await Promise.all([
+                axios.get('http://localhost:5000/api/vehicles/stats'),
+                axios.get('http://localhost:5000/api/trips')
+            ]);
+            setStats(statsRes.data);
+            setRecentTrips(tripsRes.data.slice(-5).reverse()); // Get most recent 5
+        } catch (err) {
+            console.error('Error fetching dashboard data:', err);
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
         }
     };
 
@@ -61,6 +80,7 @@ const Dashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
+<<<<<<< HEAD
                                 <tr>
                                     <td>VAN-05</td>
                                     <td>Alex M.</td>
@@ -79,6 +99,25 @@ const Dashboard = () => {
                                     <td><span className="status-pill success">Available</span></td>
                                     <td>300 kg</td>
                                 </tr>
+=======
+                                {recentTrips.map(trip => (
+                                    <tr key={trip._id}>
+                                        <td>{trip.vehicleId?.licensePlate || 'N/A'}</td>
+                                        <td>{trip.driverId?.name || 'N/A'}</td>
+                                        <td>
+                                            <span className={`status-pill ${trip.status === 'Completed' ? 'success' : trip.status === 'Dispatched' ? 'info' : 'warning'}`}>
+                                                {trip.status}
+                                            </span>
+                                        </td>
+                                        <td>{trip.cargoWeight} kg</td>
+                                    </tr>
+                                ))}
+                                {recentTrips.length === 0 && (
+                                    <tr>
+                                        <td colSpan="4" style={{ textAlign: 'center', padding: '1rem' }}>No recent trips</td>
+                                    </tr>
+                                )}
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
                             </tbody>
                         </table>
                     </div>

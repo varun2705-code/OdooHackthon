@@ -11,6 +11,7 @@ import Expenses from './pages/ExpenseLogs';
 
 import Drivers from './pages/DriverProfiles';
 import Analytics from './pages/Analytics';
+<<<<<<< HEAD
 import Profile from './pages/Profile';
 
 export const roleAccess = {
@@ -34,6 +35,16 @@ const ProtectedRoute = ({ element, path }) => {
   } catch (e) {
     return <Navigate to="/" replace />;
   }
+=======
+import AdminDashboard from './pages/AdminDashboard';
+import ManageUsers from './pages/ManageUsers';
+
+const AdminRoute = ({ children }) => {
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+  const isAdmin = user && (user.email === 'varun@gmail.com' || user.role === 'Admin');
+  return isAdmin ? children : <Navigate to="/dashboard" replace />;
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 };
 
 function App() {
@@ -44,6 +55,7 @@ function App() {
 
         {/* Protected Routes wrapped in Layout */}
         <Route element={<Layout />}>
+<<<<<<< HEAD
           <Route path="/dashboard" element={<ProtectedRoute path="/dashboard" element={<Dashboard />} />} />
           <Route path="/vehicles" element={<ProtectedRoute path="/vehicles" element={<Vehicles />} />} />
           <Route path="/dispatch" element={<ProtectedRoute path="/dispatch" element={<Dispatch />} />} />
@@ -52,6 +64,17 @@ function App() {
           <Route path="/drivers" element={<ProtectedRoute path="/drivers" element={<Drivers />} />} />
           <Route path="/analytics" element={<ProtectedRoute path="/analytics" element={<Analytics />} />} />
           <Route path="/profile" element={<ProtectedRoute path="/profile" element={<Profile />} />} />
+=======
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/vehicles" element={<Vehicles />} />
+          <Route path="/dispatch" element={<Dispatch />} />
+          <Route path="/maintenance" element={<Maintenance />} />
+          <Route path="/expenses" element={<Expenses />} />
+          <Route path="/drivers" element={<Drivers />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
+>>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
