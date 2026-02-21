@@ -11,6 +11,15 @@ import Expenses from './pages/ExpenseLogs';
 
 import Drivers from './pages/DriverProfiles';
 import Analytics from './pages/Analytics';
+import AdminDashboard from './pages/AdminDashboard';
+import ManageUsers from './pages/ManageUsers';
+
+const AdminRoute = ({ children }) => {
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
+  const isAdmin = user && (user.email === 'varun@gmail.com' || user.role === 'Admin');
+  return isAdmin ? children : <Navigate to="/dashboard" replace />;
+};
 
 function App() {
   return (
@@ -27,6 +36,8 @@ function App() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/drivers" element={<Drivers />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

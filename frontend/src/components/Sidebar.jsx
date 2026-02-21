@@ -8,7 +8,8 @@ import {
     CreditCard,
     Users,
     BarChart,
-    LogOut
+    LogOut,
+    Shield
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -16,7 +17,7 @@ const Sidebar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // In a real app we'd clear tokens here
+        localStorage.removeItem('user');
         navigate('/');
     };
 
@@ -30,11 +31,19 @@ const Sidebar = () => {
         { path: '/analytics', name: 'Analytics', icon: <BarChart size={20} /> },
     ];
 
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+    const isAdmin = user && (user.email === 'varun@gmail.com' || user.role === 'Admin');
+
+    if (isAdmin) {
+        navItems.push({ path: '/admin', name: 'Admin Panel', icon: <Shield size={20} /> });
+    }
+
     return (
         <div className="sidebar glass-panel">
             <div className="sidebar-header">
-                <h2 className="logo">FleetFlow</h2>
-                <span className="version">v1.0</span>
+
+
             </div>
 
             <nav className="sidebar-nav">

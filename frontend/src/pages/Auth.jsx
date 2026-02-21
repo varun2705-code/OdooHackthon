@@ -18,7 +18,7 @@ const Auth = () => {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
       const res = await axios.post(`http://localhost:5000${endpoint}`, formData);
       console.log('Success:', res.data);
-      // In a real app, save token/user info here
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred');
