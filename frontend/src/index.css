@@ -200,7 +200,7 @@ h3 {
 /* Data Tables */
 .data-table-container {
   width: 100%;
-  overflow-x: auto;
+  overflow: visible;
   border-radius: 12px;
   border: 1px solid var(--border-light);
   background: var(--bg-card-solid);
