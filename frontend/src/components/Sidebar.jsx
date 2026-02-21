@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
@@ -11,16 +11,30 @@ import {
     LogOut
 } from 'lucide-react';
 import './Sidebar.css';
+import { roleAccess } from '../App';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    const [userRole, setUserRole] = useState('Manager');
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUserRole(parsedUser.role || 'Manager');
+            } catch (e) {
+                console.error('Error parsing user from local storage:', e);
+            }
+        }
+    }, []);
 
     const handleLogout = () => {
-        // In a real app we'd clear tokens here
+        localStorage.removeItem('user');
         navigate('/');
     };
 
-    const navItems = [
+    const allNavItems = [
         { path: '/dashboard', name: 'Dashboard', icon: <LayoutDashboard size={20} /> },
         { path: '/vehicles', name: 'Vehicle Registry', icon: <Truck size={20} /> },
         { path: '/dispatch', name: 'Trip Dispatcher', icon: <Map size={20} /> },
@@ -29,6 +43,12 @@ const Sidebar = () => {
         { path: '/drivers', name: 'Driver Profiles', icon: <Users size={20} /> },
         { path: '/analytics', name: 'Analytics', icon: <BarChart size={20} /> },
     ];
+
+    const navItems = allNavItems.filter(item => {
+        if (item.path === '/dashboard') return true;
+        const allowedPaths = roleAccess[userRole];
+        return allowedPaths ? allowedPaths.includes(item.path) : false;
+    });
 
     return (
         <div className="sidebar glass-panel">
