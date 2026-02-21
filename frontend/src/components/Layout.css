@@ -38,14 +38,7 @@
 .main-content-wrapper {
     flex: 1;
     margin-left: calc(260px + 32px);
-<<<<<<< HEAD
-    /* Sidebar width + spacing */
     padding: 16px 32px;
-    /* Increased horizontal padding slightly but kept it balanced */
-=======
-    /* Sidebar width + margins */
-    padding: 16px 16px 16px 0;
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -56,10 +49,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
     width: 100%;
-=======
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     /* Add an animation for page transitions */
     animation: fadeIn 0.4s ease-out;
 }
@@ -67,17 +57,10 @@
 @keyframes fadeIn {
     from {
         opacity: 0;
-<<<<<<< HEAD
-=======
         transform: translateY(10px);
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     }
-
     to {
         opacity: 1;
-<<<<<<< HEAD
-=======
         transform: translateY(0);
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     }
 }

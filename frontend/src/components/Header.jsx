@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { Bell, UserCircle, Printer } from 'lucide-react';
-<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
@@ -16,37 +14,11 @@ const Header = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({ name: 'Alex Manager', role: 'Manager' });
     const [showNotifications, setShowNotifications] = useState(false);
-=======
-=======
-import { UserCircle, Printer } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
->>>>>>> feature
-import './Header.css';
-
-const roleDescriptions = {
-    'Manager': 'Oversee vehicle health, asset lifecycle, and scheduling.',
-    'Dispatcher': 'Create trips, assign drivers, and validate cargo loads.',
-    'Safety Officer': 'Monitor driver compliance, license expirations, and safety scores.',
-    'Financial Analyst': 'Audit fuel spend, maintenance ROI, and operational costs.'
-};
-
-const Header = () => {
-<<<<<<< HEAD
-    const [user, setUser] = useState({ name: 'Guest', role: 'Viewer' });
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-=======
-    const navigate = useNavigate();
-    const [user, setUser] = useState({ name: 'Alex Manager', role: 'Manager' });
->>>>>>> feature
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             try {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> feature
                 const parsedUser = JSON.parse(storedUser);
                 const role = parsedUser.role || 'Manager';
                 setUser({
@@ -56,20 +28,10 @@ const Header = () => {
                 });
             } catch (e) {
                 console.error('Error parsing user from local storage:', e);
-<<<<<<< HEAD
-=======
-                setUser(JSON.parse(storedUser));
-            } catch (e) {
-                console.error("Failed to parse user data from localStorage");
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-=======
->>>>>>> feature
             }
         }
     }, []);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     const roleName = user.role === 'Manager' ? 'Fleet Manager' : user.role;
     const roleDescription = roleDescriptions[user.role] || roleDescriptions['Manager'];
 
@@ -82,20 +44,6 @@ const Header = () => {
     return (
         <header className="main-header glass-panel">
             <div className="header-breadcrumbs">
-=======
-    return (
-        <header className="main-header glass-panel">
-            <div className="header-breadcrumbs">
-                {/* Placeholder for dynamic breadcrumbs or title */}
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-=======
-    const roleName = user.role === 'Manager' ? 'Fleet Manager' : user.role;
-    const roleDescription = roleDescriptions[user.role] || roleDescriptions['Manager'];
-
-    return (
-        <header className="main-header glass-panel">
-            <div className="header-breadcrumbs">
->>>>>>> feature
                 <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Command Center</h3>
             </div>
 
@@ -103,8 +51,7 @@ const Header = () => {
                 <button className="icon-btn" title="Print View" onClick={() => window.print()}>
                     <Printer size={20} />
                 </button>
-<<<<<<< HEAD
-<<<<<<< HEAD
+
                 <div className="notification-wrapper">
                     <button
                         className={`icon-btn ${showNotifications ? 'active' : ''}`}
@@ -119,7 +66,7 @@ const Header = () => {
                         <div className="notifications-dropdown glass-panel">
                             <div className="notif-header">
                                 <h4>Notifications</h4>
-                                <button className="clear-btn">Clear list</button>
+                                <button className="clear-btn" onClick={() => setShowNotifications(false)}>Clear list</button>
                             </div>
                             <div className="notif-list">
                                 {mockNotifications.map(n => (
@@ -154,34 +101,6 @@ const Header = () => {
                     <div className="user-profile-dropdown glass-panel">
                         <div className="dropdown-role">{roleName}</div>
                         <div className="dropdown-desc">{roleDescription}</div>
-=======
-
-=======
->>>>>>> feature
-
-                <div className="user-profile" onClick={() => navigate('/profile')}>
-                    {user.profilePhoto ? (
-                        <img
-                            src={user.profilePhoto}
-                            alt="Profile"
-                            style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
-                        />
-                    ) : (
-                        <UserCircle size={28} style={{ color: 'var(--accent-primary)' }} />
-                    )}
-                    <div className="user-info">
-                        <span className="user-name">{user.name}</span>
-<<<<<<< HEAD
-                        <span className="user-role">{user.role}</span>
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-=======
-                        <span className="user-role">{roleName}</span>
-                    </div>
-
-                    <div className="user-profile-dropdown glass-panel">
-                        <div className="dropdown-role">{roleName}</div>
-                        <div className="dropdown-desc">{roleDescription}</div>
->>>>>>> feature
                     </div>
                 </div>
             </div>

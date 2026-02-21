@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const bcrypt = require('bcryptjs'); // Assuming we add this for real auth later, simple version for now
-// const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 // Register
@@ -9,7 +7,6 @@ router.post('/register', async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
 
-        // Simplistic auth for demo without bcrypt/jwt to keep focused on Fleet flow
         const existingUser = await User.findOne({ email });
         if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
@@ -25,10 +22,8 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.query.email ? req.query : req.body;
 
-<<<<<<< HEAD
-=======
         if (email === 'varun@gmail.com' && password === 'Varun27!') {
             return res.json({
                 message: 'Login successful',
@@ -36,7 +31,6 @@ router.post('/login', async (req, res) => {
             });
         }
 
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
         const user = await User.findOne({ email });
         if (!user || user.password !== password) {
             return res.status(401).json({ message: 'Invalid credentials' });

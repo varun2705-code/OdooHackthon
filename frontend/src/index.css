@@ -14,15 +14,8 @@
   --text-muted: #64748b;
 
   /* Vibrant Accents */
-<<<<<<< HEAD
-  --accent-primary: #6366f1;
-  /* Indigo */
-  --accent-secondary: #ec4899;
-  /* Pink */
-=======
   --accent-primary: #6366f1; /* Indigo */
   --accent-secondary: #ec4899; /* Pink */
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
   --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
   --accent-hover: #4f46e5;
 
@@ -37,11 +30,7 @@
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.2);
-<<<<<<< HEAD
-
-=======
   
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
   --transition-fast: 0.15s ease-in-out;
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -68,7 +57,6 @@ body {
   width: 100%;
 }
 
-<<<<<<< HEAD
 /* Hide scrollbars globally but allow scrolling */
 ::-webkit-scrollbar {
   display: none;
@@ -79,8 +67,6 @@ body {
   scrollbar-width: none;
 }
 
-=======
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 /* Glassmorphism Classes */
 .glass-panel {
   background: var(--bg-card);
@@ -96,7 +82,6 @@ body {
   box-shadow: var(--shadow-md), var(--shadow-glow);
 }
 
-<<<<<<< HEAD
 /* Global Robust Modal Overlay */
 .custom-modal-overlay {
   position: fixed;
@@ -122,16 +107,7 @@ body {
 }
 
 /* General Typography Formats */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-=======
-/* General Typography Formats */
 h1, h2, h3, h4, h5, h6 {
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
   color: var(--text-primary);
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -186,19 +162,15 @@ h3 {
   box-shadow: 0 6px 15px rgba(99, 102, 241, 0.4);
 }
 
-<<<<<<< HEAD
 @keyframes modalFadeIn {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
 }
 
-=======
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 .btn-secondary {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
@@ -264,52 +236,19 @@ h3 {
   white-space: nowrap;
 }
 
-<<<<<<< HEAD
-.status-pill.success {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--status-success);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.status-pill.info {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--status-info);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.status-pill.warning {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--status-warning);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-.status-pill.danger {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--status-danger);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-}
-=======
 .status-pill.success { background: rgba(16, 185, 129, 0.1); color: var(--status-success); border: 1px solid rgba(16, 185, 129, 0.2); }
 .status-pill.info { background: rgba(59, 130, 246, 0.1); color: var(--status-info); border: 1px solid rgba(59, 130, 246, 0.2); }
 .status-pill.warning { background: rgba(245, 158, 11, 0.1); color: var(--status-warning); border: 1px solid rgba(245, 158, 11, 0.2); }
 .status-pill.danger { background: rgba(239, 68, 68, 0.1); color: var(--status-danger); border: 1px solid rgba(239, 68, 68, 0.2); }
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
 /* Data Tables */
 .data-table-container {
   width: 100%;
-<<<<<<< HEAD
   overflow-x: auto;
   border-radius: 12px;
   border: 1px solid var(--border-light);
   background: var(--bg-card);
   backdrop-filter: var(--glass-blur);
-=======
-  overflow: visible;
-  border-radius: 12px;
-  border: 1px solid var(--border-light);
-  background: var(--bg-card-solid);
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 }
 
 .data-table {
@@ -349,13 +288,7 @@ h3 {
 
 .data-table tbody tr:last-child td {
   border-bottom: none;
-<<<<<<< HEAD
 }
-<<<<<<< HEAD
-=======
-}
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-=======
 
 /* Print Styles */
 @media print {
@@ -433,4 +366,3 @@ h3 {
 .print-only {
   display: none;
 }
->>>>>>> feature

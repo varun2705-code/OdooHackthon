@@ -29,7 +29,6 @@ router.post('/', async (req, res) => {
         await log.save(); // Note: Pre-save hook in model will update vehicle status to "In Shop"
         res.status(201).json(log);
     } catch (error) {
-<<<<<<< HEAD
         console.error('Error in maintenance POST:', error);
         res.status(400).json({ message: 'Error logging maintenance', error: error.message || error });
     }
@@ -44,15 +43,21 @@ router.put('/:id/complete', async (req, res) => {
         log.completed = true;
         await log.save();
 
-        // Update vehicle status back to Available
-        await Vehicle.findByIdAndUpdate(log.vehicleId, { status: 'Available' });
+        // Check if there are any OTHER active maintenance logs for this vehicle
+        const activeLogsCount = await MaintenanceLog.countDocuments({
+            vehicleId: log.vehicleId,
+            completed: false,
+            _id: { $ne: log._id }
+        });
 
-        res.json({ message: 'Maintenance completed, vehicle back in service', log });
+        // Only update vehicle status back to Available if no other active logs exist
+        if (activeLogsCount === 0) {
+            await Vehicle.findByIdAndUpdate(log.vehicleId, { status: 'Available' });
+        }
+
+        res.json({ message: 'Maintenance completed', log, vehicleReleased: activeLogsCount === 0 });
     } catch (error) {
         res.status(400).json({ message: 'Error completing maintenance', error });
-=======
-        res.status(400).json({ message: 'Error logging maintenance', error });
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
     }
 });
 

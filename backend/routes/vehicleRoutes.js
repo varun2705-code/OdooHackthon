@@ -60,8 +60,6 @@ router.get('/stats', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
-=======
 // Delete vehicle permanently
 router.delete('/:id', async (req, res) => {
     try {
@@ -75,5 +73,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 module.exports = router;

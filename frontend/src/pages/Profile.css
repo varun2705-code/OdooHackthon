@@ -39,10 +39,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-    border: 3px solid var(--accent-primary);
-    overflow: hidden;
-=======
 }
 
 .profile-photo-inner {
@@ -55,7 +51,6 @@
     justify-content: center;
     align-items: center;
     position: relative;
->>>>>>> feature
 }
 
 .profile-photo-placeholder {
@@ -73,28 +68,6 @@
     object-fit: cover;
 }
 
-<<<<<<< HEAD
-.photo-upload-btn {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: var(--accent-gradient);
-    border-radius: 50%;
-    padding: 0.5rem;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    transition: transform var(--transition-fast);
-}
-
-.photo-upload-btn:hover {
-    transform: scale(1.1);
-}
-
-=======
 .photo-actions-container {
     position: absolute;
     bottom: 5px;
@@ -171,7 +144,6 @@
 .photo-action-item.take { color: var(--status-info); }
 .photo-action-item.upload { color: var(--status-success); }
 
->>>>>>> feature
 .profile-brief {
     text-align: center;
 }
@@ -195,12 +167,6 @@
     flex: 1;
 }
 
-<<<<<<< HEAD
-.disabled-input {
-    background: rgba(255, 255, 255, 0.02);
-    cursor: not-allowed;
-    color: var(--text-muted);
-=======
 .profile-form .form-control {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -231,7 +197,6 @@
     color: var(--text-muted);
     opacity: 0.7;
     pointer-events: none;
->>>>>>> feature
 }
 
 .profile-actions {
@@ -248,8 +213,6 @@
     font-size: 0.875rem;
     font-weight: 500;
 }
-<<<<<<< HEAD
-=======
 
 /* Camera Overlay */
 .camera-modal-overlay {
@@ -325,4 +288,3 @@
 .capture-btn {
     width: 100%;
 }
->>>>>>> feature

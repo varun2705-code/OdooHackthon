@@ -70,18 +70,6 @@ const Analytics = () => {
     const WrenchIcon = () => <Wrench size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />;
 
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <div className="page-container" style={{ position: 'relative', width: '100%' }}>
-=======
-        <div className="page-container glass-panel" style={{ padding: '1.5rem' }}>
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <div>
-                    <h2>Operational & Financial Analytics</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Track Vehicle ROI and overall spending</p>
-                </div>
-=======
         <div className="analytics-page">
             <PageHeader
                 title="Operational & Financial Analytics"
@@ -90,64 +78,62 @@ const Analytics = () => {
             />
 
             <div className="analytics-actions no-print" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
->>>>>>> feature
                 <button className="btn btn-secondary" onClick={exportCSV}>
                     <Download size={18} />
                     Export CSV
                 </button>
             </div>
 
-            <div className="analytics-catalog glass-panel" style={{ padding: '1.5rem' }}>
-                <div className="data-table-container">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Vehicle Asset</th>
-                                <th>Total Revenue</th>
-                                <th><FuelIcon /> Fuel Spend</th>
-                                <th><WrenchIcon /> Maintenance</th>
-                                <th>Vehicle ROI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredAnalytics.map((item) => {
-                                const roiValue = parseFloat(item.roi);
-                                return (
-                                    <tr key={item.vehicle._id}>
-                                        <td>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <span style={{ fontWeight: '500' }}>{item.vehicle.licensePlate}</span>
-                                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cost: {formatCurrency(item.vehicle.acquisitionCost)}</span>
-                                            </div>
-                                        </td>
-                                        <td style={{ color: 'var(--status-success)', fontWeight: '600' }}>{formatCurrency(item.revenue)}</td>
-                                        <td style={{ color: 'var(--status-info)' }}>{formatCurrency(item.fuelCost)}</td>
-                                        <td style={{ color: 'var(--status-warning)' }}>{formatCurrency(item.maintenanceCost)}</td>
-                                        <td>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                                <span style={{
-                                                    color: roiValue >= 0 ? 'var(--status-success)' : 'var(--status-danger)',
-                                                    fontWeight: 'bold',
-                                                    padding: '0.25rem 0.5rem',
-                                                    background: roiValue >= 0 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                                    borderRadius: '4px'
-                                                }}>
-                                                    {item.roi}
-                                                </span>
-                                                {roiValue >= 0 ? <TrendingUp size={16} color="var(--status-success)" /> : <TrendingUp size={16} color="var(--status-danger)" style={{ transform: 'scaleY(-1)' }} />}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                            {filteredAnalytics.length === 0 && (
-                                <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No analytics data available for your search.</td>
+            <div className="data-table-container">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            <th>Vehicle Asset</th>
+                            <th>Total Revenue</th>
+                            <th><FuelIcon /> Fuel Spend</th>
+                            <th><WrenchIcon /> Maintenance</th>
+                            <th>Vehicle ROI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredAnalytics.map((item) => {
+                            const roiValue = parseFloat(item.roi);
+                            return (
+                                <tr key={item.vehicle._id}>
+                                    <td>
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span style={{ fontWeight: '500' }}>{item.vehicle.licensePlate}</span>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cost: {formatCurrency(item.vehicle.acquisitionCost)}</span>
+                                        </div>
+                                    </td>
+                                    <td style={{ color: 'var(--status-success)', fontWeight: '600' }}>{formatCurrency(item.revenue)}</td>
+                                    <td style={{ color: 'var(--status-info)' }}>{formatCurrency(item.fuelCost)}</td>
+                                    <td style={{ color: 'var(--status-warning)' }}>{formatCurrency(item.maintenanceCost)}</td>
+                                    <td>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <span style={{
+                                                color: roiValue >= 0 ? 'var(--status-success)' : 'var(--status-danger)',
+                                                fontWeight: 'bold',
+                                                padding: '0.25rem 0.5rem',
+                                                background: roiValue >= 0 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                                borderRadius: '4px',
+                                                fontSize: '0.85rem'
+                                            }}>
+                                                {item.roi}
+                                            </span>
+                                            {roiValue >= 0 ? <TrendingUp size={16} color="var(--status-success)" /> : <TrendingUp size={16} color="var(--status-danger)" style={{ transform: 'scaleY(-1)' }} />}
+                                        </div>
+                                    </td>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                            );
+                        })}
+                        {filteredAnalytics.length === 0 && (
+                            <tr>
+                                <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No analytics data available.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

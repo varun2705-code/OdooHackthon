@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Wrench, Calendar } from 'lucide-react';
+import { Plus, Wrench, Calendar, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
 
 const MaintenanceLogs = () => {
@@ -8,22 +8,19 @@ const MaintenanceLogs = () => {
     const [filteredLogs, setFilteredLogs] = useState([]);
     const [vehicles, setVehicles] = useState([]);
     const [showForm, setShowForm] = useState(false);
-    const [filters, setFilters] = useState({ search: '', type: '', sort: '' });
-
+    const [filters, setFilters] = useState({ search: '', type: '', sort: 'newest' });
     const [formData, setFormData] = useState({
         vehicleId: '', description: '', cost: '', type: 'Preventative'
     });
-<<<<<<< HEAD
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-=======
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
 
     useEffect(() => {
         fetchData();
     }, [filters.type]);
 
     const fetchData = async (searchVal) => {
+        setLoading(true);
         try {
             const currentSearch = typeof searchVal === 'string' ? searchVal : filters.search;
             const [logsRes, vehiclesRes] = await Promise.all([
@@ -47,14 +44,24 @@ const MaintenanceLogs = () => {
             applyLocalSort(data, filters.sort);
             setVehicles(vehiclesRes.data);
         } catch (err) {
-            console.error(err);
+            console.error('Error fetching maintenance data:', err);
+            setError('Failed to load maintenance logs.');
+        } finally {
+            setLoading(false);
         }
     };
 
     const applyLocalSort = (data, sortType) => {
         let sorted = [...data];
-        if (sortType === 'newest') sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
-        else if (sortType === 'oldest') sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+        if (sortType === 'newest') {
+            sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (sortType === 'oldest') {
+            sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+        } else if (sortType === 'name_asc') {
+            sorted.sort((a, b) => (a.vehicleId?.licensePlate || '').localeCompare(b.vehicleId?.licensePlate || ''));
+        } else if (sortType === 'name_desc') {
+            sorted.sort((a, b) => (b.vehicleId?.licensePlate || '').localeCompare(a.vehicleId?.licensePlate || ''));
+        }
         setFilteredLogs(sorted);
     };
 
@@ -68,31 +75,34 @@ const MaintenanceLogs = () => {
         fetchData(val);
     };
 
+    const handleGroup = (val) => {
+        // Map PageHeader group values to filter logic
+        if (val === 'Preventative' || val === 'Reactive') {
+            setFilters(prev => ({ ...prev, type: val }));
+        } else if (val === '') {
+            setFilters(prev => ({ ...prev, type: '' }));
+        }
+        // Other groups like 'status' could be handled if the backend supported them
+    };
+
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-<<<<<<< HEAD
         setLoading(true);
         setError(null);
         try {
-            // Ensure cost is a number
             const submissionData = {
                 ...formData,
                 cost: Number(formData.cost)
             };
             await axios.post('http://localhost:5000/api/maintenance', submissionData);
-=======
-        try {
-            await axios.post('http://localhost:5000/api/maintenance', formData);
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
             setShowForm(false);
             setFormData({ vehicleId: '', description: '', cost: '', type: 'Preventative' });
             fetchData();
         } catch (err) {
-<<<<<<< HEAD
             console.error('Error logging maintenance:', err);
-            setError(err.response?.data?.error || err.response?.data?.message || 'Failed to log maintenance. Please check your inputs.');
+            setError(err.response?.data?.error || err.response?.data?.message || 'Failed to log maintenance.');
         } finally {
             setLoading(false);
         }
@@ -105,232 +115,47 @@ const MaintenanceLogs = () => {
         } catch (err) {
             console.error('Error completing maintenance:', err);
             alert('Failed to complete maintenance.');
-=======
-            console.error(err);
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
         }
     };
 
+    const formatCurrency = (val) => {
+        return '$' + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <div className="page-container" style={{ position: 'relative', width: '100%' }}>
-            {/* Header and Background Content */}
-            <div style={{ filter: showForm ? 'blur(8px)' : 'none', transition: 'filter 0.3s ease' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '3rem', textAlign: 'center' }}>
-                    <div>
-                        <h2>Service & Maintenance</h2>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Logging maintenance automatically sets the vehicle status to "In Shop"</p>
-                    </div>
-                    <button className="btn btn-primary" onClick={() => setShowForm(true)} style={{ padding: '0.75rem 2rem' }}>
-                        <Plus size={18} />
-                        Log Maintenance
-                    </button>
-                </div>
-
-                <div className="data-table-container">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Vehicle</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Cost</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {logs.map((log) => (
-                                <tr key={log._id}>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <Calendar size={14} style={{ color: 'var(--text-muted)' }} />
-                                            {new Date(log.date).toLocaleDateString()}
-                                        </div>
-                                    </td>
-                                    <td style={{ fontWeight: '500' }}>{log.vehicleId?.licensePlate || 'N/A'}</td>
-                                    <td>
-                                        <span className={`status-pill ${log.type === 'Preventative' ? 'info' : 'danger'}`}>
-                                            {log.type}
-                                        </span>
-                                    </td>
-                                    <td>{log.description}</td>
-                                    <td style={{ color: 'var(--status-warning)', fontWeight: '600' }}>
-                                        ${typeof log.cost === 'number' ? log.cost.toLocaleString() : log.cost}
-                                    </td>
-                                    <td>
-                                        <span className={`status-pill ${log.completed ? 'success' : 'warning'}`}>
-                                            {log.completed ? 'Service Complete' : 'In Progress'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        {!log.completed && (
-                                            <button
-                                                className="btn btn-primary"
-                                                style={{ padding: '0.25rem 0.75rem', fontSize: '0.75rem', width: 'auto' }}
-                                                onClick={() => handleComplete(log._id)}
-                                            >
-                                                Return to Service
-                                            </button>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                            {logs.length === 0 && (
-                                <tr>
-                                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem' }}>No maintenance logs found. Click "Log Maintenance" to add one.</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            {/* Modal Overlay */}
-            {showForm && (
-                <div className="custom-modal-overlay" onClick={() => setShowForm(false)}>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="glass-panel modal-content"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h3 style={{ gridColumn: 'span 2', marginBottom: '1rem', color: 'var(--text-primary)', textAlign: 'center' }}>Log Maintenance Activity</h3>
-
-                        {error && (
-                            <div style={{
-                                gridColumn: 'span 2',
-                                padding: '0.75rem',
-                                background: 'rgba(239, 68, 68, 0.1)',
-                                border: '1px solid var(--status-danger)',
-                                borderRadius: '8px',
-                                color: 'var(--status-danger)',
-                                fontSize: '0.875rem',
-                                marginBottom: '0.5rem'
-                            }}>
-                                {error}
-                            </div>
-                        )}
-
-                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                            <label>Select Vehicle</label>
-                            <select name="vehicleId" className="form-control" onChange={handleChange} required>
-                                <option value="">-- Choose Vehicle --</option>
-                                {vehicles
-                                    .filter(v => v.status !== 'In Shop')
-                                    .map(v => (
-                                        <option key={v._id} value={v._id}>{v.licensePlate} ({v.status})</option>
-                                    ))}
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Service Type</label>
-                            <select name="type" className="form-control" onChange={handleChange}>
-                                <option value="Preventative">Preventative Maintenance</option>
-                                <option value="Reactive">Reactive / Repair</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Total Cost ($)</label>
-                            <input type="number" name="cost" className="form-control" onChange={handleChange} required placeholder="0.00" />
-                        </div>
-
-                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                            <label>Description</label>
-                            <input type="text" name="description" className="form-control" onChange={handleChange} required placeholder="e.g. Oil Change, Tire Replacement" />
-                        </div>
-
-                        <div style={{ gridColumn: 'span 2', display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                            <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setShowForm(false)} disabled={loading}>Cancel</button>
-                            <button type="submit" className="btn btn-warning" style={{ flex: 1 }} disabled={loading}>
-                                <Wrench size={16} style={{ marginRight: '8px' }} />
-                                {loading ? 'Sending to Shop...' : 'Send to Shop'}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
-
-            <style>{`
-                @keyframes modalFadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-            `}</style>
-=======
-        <div className="page-container glass-panel" style={{ padding: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <div>
-                    <h2>Service & Maintenance</h2>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Logging maintenance automatically sets the vehicle status to "In Shop"</p>
-                </div>
-=======
-        <div className="maintenance-logs-page">
+        <div className="maintenance-logs-page" style={{ position: 'relative' }}>
             <PageHeader
                 title="Service & Maintenance"
-                subtitle="Logging maintenance automatically sets the vehicle status to 'In Shop'"
+                subtitle="Logging maintenance updates vehicle status to 'In Shop' and tracks service history."
                 onSearch={handleSearchTrigger}
-                onGroup={(val) => setFilters(prev => ({ ...prev, type: val }))}
+                onGroup={handleGroup}
                 onSort={handleSort}
             />
 
-            <div className="maintenance-actions no-print" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
->>>>>>> feature
-                <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}>
+            <div className="maintenance-actions no-print" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                <button className="btn btn-primary" onClick={() => setShowForm(true)}>
                     <Plus size={18} />
-                    {showForm ? 'Cancel' : 'Log Maintenance'}
+                    Log Maintenance
                 </button>
             </div>
 
-            {showForm && (
-                <div className="form-container no-print" style={{ marginBottom: '2rem' }}>
-                    <form onSubmit={handleSubmit} className="glass-panel" style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                        <div className="form-group">
-                            <label>Select Vehicle</label>
-                            <select name="vehicleId" className="form-control" onChange={handleChange} required>
-                                <option value="">-- Choose Vehicle --</option>
-                                {vehicles.map(v => (
-                                    <option key={v._id} value={v._id}>{v.licensePlate} ({v.status})</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>Service Type</label>
-                            <select name="type" className="form-control" onChange={handleChange}>
-                                <option value="Preventative">Preventative Maintenance</option>
-                                <option value="Reactive">Reactive / Repair</option>
-                            </select>
-                        </div>
-                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                            <label>Description (e.g., Oil Change, Tire Replacement)</label>
-                            <input type="text" name="description" className="form-control" onChange={handleChange} required />
-                        </div>
-                        <div className="form-group">
-                            <label>Total Cost ($)</label>
-                            <input type="number" name="cost" className="form-control" onChange={handleChange} required />
-                        </div>
-                        <div className="form-group" style={{ display: 'flex', alignItems: 'flex-end' }}>
-                            <button type="submit" className="btn btn-warning" style={{ width: '100%' }}>
-                                <Wrench size={16} style={{ marginRight: '8px' }} /> Send to Shop
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
-
-            <div className="logs-catalog glass-panel" style={{ padding: '1.5rem' }}>
-                <div className="data-table-container">
+            <div className="data-table-container">
+                {loading && filteredLogs.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '3rem' }}>
+                        <div className="loading-spinner"></div>
+                        <p style={{ marginTop: '1rem', color: 'var(--text-secondary)' }}>Loading logs...</p>
+                    </div>
+                ) : (
                     <table className="data-table">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Vehicle</th>
+                                <th>Service Date</th>
+                                <th>Vehicle Asset</th>
                                 <th>Type</th>
-                                <th>Description</th>
+                                <th>Maintenance Details</th>
                                 <th>Cost</th>
+                                <th>Status</th>
+                                <th className="no-print">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -342,26 +167,140 @@ const MaintenanceLogs = () => {
                                             {new Date(log.date).toLocaleDateString()}
                                         </div>
                                     </td>
-                                    <td style={{ fontWeight: '500' }}>{log.vehicleId?.licensePlate}</td>
+                                    <td>
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span style={{ fontWeight: '600' }}>{log.vehicleId?.licensePlate || 'Unknown'}</span>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{log.vehicleId?.model || 'General Fleet'}</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <span className={`status-pill ${log.type === 'Preventative' ? 'info' : 'danger'}`}>
-                                            {log.type}
+                                            {log.type === 'Preventative' ? 'Routine' : 'Repair'}
                                         </span>
                                     </td>
-                                    <td>{log.description}</td>
-                                    <td style={{ color: 'var(--status-warning)', fontWeight: '600' }}>${log.cost}</td>
+                                    <td>
+                                        <div style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={log.description}>
+                                            {log.description}
+                                        </div>
+                                    </td>
+                                    <td style={{ color: 'var(--text-primary)', fontWeight: '600' }}>
+                                        {formatCurrency(log.cost)}
+                                    </td>
+                                    <td>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            {log.completed ? (
+                                                <CheckCircle size={14} style={{ color: 'var(--status-success)' }} />
+                                            ) : (
+                                                <Clock size={14} style={{ color: 'var(--status-warning)' }} />
+                                            )}
+                                            <span className={`status-pill ${log.completed ? 'success' : 'warning'}`}>
+                                                {log.completed ? 'Completed' : 'Active'}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="no-print">
+                                        {!log.completed && (
+                                            <button
+                                                className="btn btn-secondary"
+                                                style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', width: 'auto', border: '1px solid var(--status-success)', color: 'var(--status-success)' }}
+                                                onClick={() => handleComplete(log._id)}
+                                            >
+                                                Complete Service
+                                            </button>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
-                            {filteredLogs.length === 0 && (
+                            {filteredLogs.length === 0 && !loading && (
                                 <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem' }}>No maintenance logs found matching your search.</td>
+                                    <td colSpan="7" style={{ textAlign: 'center', padding: '3rem' }}>
+                                        <AlertTriangle size={32} style={{ color: 'var(--text-muted)', marginBottom: '1rem' }} />
+                                        <p style={{ color: 'var(--text-secondary)' }}>No maintenance logs found matching your criteria.</p>
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-                </div>
+                )}
             </div>
->>>>>>> 2e85b873d150fa551d25a40cf84d9ec51c40bb4b
+
+            {showForm && (
+                <div className="custom-modal-overlay" onClick={() => setShowForm(false)}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className="glass-panel modal-content"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ maxWidth: '700px' }}
+                    >
+                        <h3 style={{ gridColumn: 'span 2', marginBottom: '1.5rem', color: 'var(--text-primary)', textAlign: 'center' }}>Log Maintenance Activity</h3>
+
+                        {error && (
+                            <div style={{
+                                gridColumn: 'span 2',
+                                padding: '0.75rem',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid var(--status-danger)',
+                                borderRadius: '8px',
+                                color: 'var(--status-danger)',
+                                fontSize: '0.875rem',
+                                marginBottom: '1rem'
+                            }}>
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                            <label>Select Vehicle</label>
+                            <select name="vehicleId" className="form-control" onChange={handleChange} required>
+                                <option value="">-- Choose Vehicle --</option>
+                                {vehicles
+                                    .filter(v => v.status !== 'Retired')
+                                    .map(v => (
+                                        <option key={v._id} value={v._id}>
+                                            {v.licensePlate} ({v.type}) - Current: {v.status}
+                                        </option>
+                                    ))}
+                            </select>
+                            <small className="helper-text" style={{ color: 'var(--text-muted)', marginTop: '4px' }}>
+                                Vehicles already 'In Shop' are listed to allow logging multiple service items.
+                            </small>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Service Category</label>
+                            <select name="type" className="form-control" onChange={handleChange}>
+                                <option value="Preventative">Routine / Preventative</option>
+                                <option value="Reactive">Reactive / Repair</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Total Estimated Cost ($)</label>
+                            <input type="number" name="cost" className="form-control" onChange={handleChange} required placeholder="0.00" step="0.01" />
+                        </div>
+
+                        <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                            <label>Service Description</label>
+                            <textarea
+                                name="description"
+                                className="form-control"
+                                onChange={handleChange}
+                                required
+                                placeholder="Detail the work being performed (e.g. 50k mile service, brake pad replacement)..."
+                                style={{ minHeight: '80px', resize: 'vertical' }}
+                            ></textarea>
+                        </div>
+
+                        <div style={{ gridColumn: 'span 2', display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                            <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setShowForm(false)} disabled={loading}>Cancel</button>
+                            <button type="submit" className="btn btn-primary" style={{ flex: 1 }} disabled={loading}>
+                                <Wrench size={16} style={{ marginRight: '8px' }} />
+                                {loading ? 'Logging Activity...' : 'Log & Send to Shop'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };

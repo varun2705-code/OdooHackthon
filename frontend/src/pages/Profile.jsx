@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import { UserCircle, Camera, Save } from 'lucide-react';
-=======
 import React, { useState, useEffect, useRef } from 'react';
 import { UserCircle, Camera, Save, Plus, Upload, Trash2, X } from 'lucide-react';
->>>>>>> feature
 import './Profile.css';
 
 const Profile = () => {
@@ -18,15 +13,12 @@ const Profile = () => {
 
     const [isSaving, setIsSaving] = useState(false);
     const [message, setMessage] = useState('');
-<<<<<<< HEAD
-=======
     const [showPhotoActions, setShowPhotoActions] = useState(false);
 
     // Camera logic states
     const [showCameraModal, setShowCameraModal] = useState(false);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
->>>>>>> feature
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -61,8 +53,6 @@ const Profile = () => {
         }
     };
 
-<<<<<<< HEAD
-=======
     const handleDeletePhoto = () => {
         setUser((prev) => ({ ...prev, profilePhoto: null }));
         setShowPhotoActions(false);
@@ -115,7 +105,6 @@ const Profile = () => {
         setShowCameraModal(false);
     };
 
->>>>>>> feature
     const handleSave = (e) => {
         e.preventDefault();
         setIsSaving(true);
@@ -133,8 +122,6 @@ const Profile = () => {
         }, 800);
     };
 
-<<<<<<< HEAD
-=======
     const today = new Date();
     const maxDate = today.toISOString().split('T')[0];
 
@@ -143,7 +130,6 @@ const Profile = () => {
     minDateObj.setFullYear(today.getFullYear() - 100);
     const minDate = minDateObj.toISOString().split('T')[0];
 
->>>>>>> feature
     return (
         <div className="profile-page">
             <h1 className="page-title">Personal Profile</h1>
@@ -152,19 +138,6 @@ const Profile = () => {
             <div className="profile-container glass-panel">
                 <div className="profile-sidebar">
                     <div className="profile-photo-wrapper">
-<<<<<<< HEAD
-                        {user.profilePhoto ? (
-                            <img src={user.profilePhoto} alt="Profile" className="profile-photo" />
-                        ) : (
-                            <div className="profile-photo-placeholder">
-                                <UserCircle size={80} color="var(--text-secondary)" />
-                            </div>
-                        )}
-                        <label className="photo-upload-btn" title="Change Photo">
-                            <Camera size={18} />
-                            <input type="file" accept="image/*" onChange={handlePhotoChange} hidden />
-                        </label>
-=======
                         <div className="profile-photo-inner">
                             {user.profilePhoto ? (
                                 <img src={user.profilePhoto} alt="Profile" className="profile-photo" />
@@ -189,7 +162,6 @@ const Profile = () => {
                                 <Plus size={20} />
                             </button>
                         </div>
->>>>>>> feature
                     </div>
                     <div className="profile-brief">
                         <h2>{user.name || 'User'}</h2>
@@ -234,11 +206,8 @@ const Profile = () => {
                                     name="dob"
                                     className="form-control"
                                     value={user.dob}
-<<<<<<< HEAD
-=======
                                     min={minDate}
                                     max={maxDate}
->>>>>>> feature
                                     onChange={handleChange}
                                 />
                             </div>
@@ -246,11 +215,7 @@ const Profile = () => {
 
                         <div className="form-group row">
                             <div className="col">
-<<<<<<< HEAD
-                                <label>System Role <span style={{ fontSize: '0.75rem', color: 'var(--status-warning)' }}>(Immutable)</span></label>
-=======
                                 <label>System Role</label>
->>>>>>> feature
                                 <input
                                     type="text"
                                     className="form-control disabled-input"
@@ -273,8 +238,6 @@ const Profile = () => {
                     </form>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
 
             {showCameraModal && (
                 <div className="camera-modal-overlay">
@@ -294,7 +257,6 @@ const Profile = () => {
                     </div>
                 </div>
             )}
->>>>>>> feature
         </div>
     );
 };
