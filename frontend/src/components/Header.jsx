@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, UserCircle, Printer } from 'lucide-react';
+import { UserCircle, Printer } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
@@ -13,7 +13,6 @@ const roleDescriptions = {
 const Header = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({ name: 'Alex Manager', role: 'Manager' });
-    const [showNotifications, setShowNotifications] = useState(false);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -35,16 +34,6 @@ const Header = () => {
     const roleName = user.role === 'Manager' ? 'Fleet Manager' : user.role;
     const roleDescription = roleDescriptions[user.role] || roleDescriptions['Manager'];
 
-    const [notifications, setNotifications] = useState([
-        { id: 1, text: 'Vehicle #402 needs diagnostic check.', time: '10 mins ago', type: 'warning' },
-        { id: 2, text: 'Trip DP-1049 successfully delivered.', time: '1 hour ago', type: 'success' },
-        { id: 3, text: 'System update scheduled for 2AM.', time: '4 hours ago', type: 'info' },
-    ]);
-
-    const clearNotifications = () => {
-        setNotifications([]);
-    };
-
     return (
         <header className="main-header glass-panel">
             <div className="header-breadcrumbs">
@@ -55,42 +44,6 @@ const Header = () => {
                 <button className="icon-btn" title="Print View" onClick={() => window.print()}>
                     <Printer size={20} />
                 </button>
-                <div className="notification-wrapper">
-                    <button
-                        className={`icon-btn ${showNotifications ? 'active' : ''}`}
-                        title="Notifications"
-                        onClick={() => setShowNotifications(!showNotifications)}
-                    >
-                        <Bell size={20} />
-                        {notifications.length > 0 && <span className="badge">{notifications.length}</span>}
-                    </button>
-
-                    {showNotifications && (
-                        <div className="notifications-dropdown glass-panel">
-                            <div className="notif-header">
-                                <h4>Notifications</h4>
-                                <button className="clear-btn" onClick={clearNotifications}>Clear</button>
-                            </div>
-                            <div className="notif-list">
-                                {notifications.length > 0 ? (
-                                    notifications.map(n => (
-                                        <div key={n.id} className="notif-item">
-                                            <span className={`notif-indicator ${n.type}`}></span>
-                                            <div className="notif-content">
-                                                <p>{n.text}</p>
-                                                <small className="notif-time">{n.time}</small>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="notif-empty">
-                                        <p>No new notifications</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                </div>
 
                 <div className="user-profile" onClick={() => navigate('/profile')}>
                     {user.profilePhoto ? (

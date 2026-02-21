@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Truck, Activity, PackageCheck, AlertTriangle } from 'lucide-react';
 import './Dashboard.css';
+import PageHeader from '../components/PageHeader';
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -33,6 +34,12 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
+            <PageHeader
+                title="Dashboard"
+                subtitle="Real-time overview of your fleet operations and performance metrics."
+                onSearch={(val) => console.log('Searching dashboard:', val)}
+            />
+
             <div className="kpi-grid no-print">
                 {kpiCards.map((kpi, idx) => (
                     <div key={idx} className="kpi-card glass-panel">
