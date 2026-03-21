@@ -1,7 +1,6 @@
 # Odoo Hackathon - Fleet Management System
 
 A comprehensive Fleet Management System built during the Odoo Hackathon. This application allows users to manage vehicles, drivers, trips, maintenance, and expenses in an integrated dashboard.
-video link:https://drive.google.com/file/d/173-4siSZC9VdMGo_meC_qAJdqibR2uqq/view?usp=drive_link
 
 ## 🚀 Features
 
